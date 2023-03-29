@@ -1,5 +1,5 @@
 # imports
-import re
+import re, os
 from pathlib import Path
 import torch
 import whisper
@@ -7,18 +7,18 @@ from pytube import YouTube
 import pandas as pd
 from fastcore.foundation import working_directory
 
-
+working_base_dir = Path(os.getcwd())
+audio_path = working_base_dir.joinpath('audio')
+srt_path = working_base_dir.joinpath('caption')
 
 # Download the YT video as audio format
 def get_audio(url : str):
-    audio_path = Path('../audio')
+    # audio_path = Path('../audio')
     with working_directory(audio_path):
         audio_input = YouTube(url).streams.filter(only_audio=True).last()
         audio_input = audio_input.download()
 
     return audio_input
-
-
 
 
 # transcribe function :: using 'base' model
@@ -35,7 +35,7 @@ def get_caption(model_output : dict):
 
 # write caption file into .srt format
 def write_caption(text : str, name : str):
-    srt_path = Path('../caption')
+    # srt_path = Path('../caption')
     with working_directory(srt_path):
         with open(f"{name}.srt", "w") as f:
             f.write(text)
@@ -47,7 +47,7 @@ def get_segments(model_output : dict):
     df_segments = pd.DataFrame(model_output['segments'], columns['id', 'start', 'end', 'text'])
 
 
-# =========== main ============== #
+# =========== test  ============== #
 
 url = 'https://youtu.be/ORMx45xqWkA'
 audio_src = get_audio(url)
