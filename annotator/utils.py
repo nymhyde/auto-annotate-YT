@@ -44,13 +44,14 @@ def write_caption(text : str, name : str):
 
 
 def get_segments(model_output : dict):
-    df_segments = pd.DataFrame(model_output['segments'], columns['id', 'start', 'end', 'text'])
+    df_segments = pd.DataFrame(model_output['segments'], columns=['id', 'start', 'end', 'text'])
 
 
 # =========== test  ============== #
-
+'''
 url = 'https://youtu.be/ORMx45xqWkA'
 audio_src = get_audio(url)
 annotation = annotate(audio_src)
 caption = get_caption(annotation)
 write_caption(caption, 'first')
+'''
