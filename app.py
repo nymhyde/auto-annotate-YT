@@ -23,7 +23,7 @@ def make_sidebar():
         st.write('Link to the GitHub Repo')
 
 
-@st.cache_data
+@st.cache(allow_output_mutation=True)
 def caption_from_url(url : str):
     audio_src = get_audio(url)
     annotation = annotate(audio_src)
