@@ -1,5 +1,5 @@
 # imports
-import re, os
+import re, os, subprocess
 from pathlib import Path
 import torch
 import whisper
@@ -7,13 +7,17 @@ from pytube import YouTube
 import pandas as pd
 from fastcore.foundation import working_directory
 
-working_base_dir = Path(os.getcwd())
-audio_path = working_base_dir.joinpath('audio')
-srt_path = working_base_dir.joinpath('caption')
+
+# os.chdir('../')
+
+def start_app():
+    subprocess.run(['streamlit', 'run', 'app.py'])
+
+
 
 # Download the YT video as audio format
 def get_audio(url : str):
-    # audio_path = Path('../audio')
+    audio_path = Path('./audio')
     with working_directory(audio_path):
         audio_input = YouTube(url).streams.filter(only_audio=True).last()
         audio_input = audio_input.download()
@@ -22,8 +26,9 @@ def get_audio(url : str):
 
 
 # transcribe function :: using 'base' model
-def annotate(audio_src, model_size='small'):
-    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+def annotate(audio_src, model_size='tiny'):
+    # device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+    device = 'cpu'
     model = whisper.load_model(model_size, device=device)
     annotation = model.transcribe(audio_src)
 
@@ -35,11 +40,11 @@ def get_caption(model_output : dict):
 
 # write caption file into .srt format
 def write_caption(text : str, name : str):
-    # srt_path = Path('../caption')
-    with working_directory(srt_path):
-        with open(f"{name}.srt", "w") as f:
-            f.write(text)
-            f.close()
+    #srt_path = Path('./caption')
+    # with working_directory(srt_path):
+    with open(f"{name}.srt", "w") as f:
+        f.write(text)
+        f.close()
 
 
 
@@ -48,10 +53,8 @@ def get_segments(model_output : dict):
 
 
 # =========== test  ============== #
-'''
 url = 'https://youtu.be/ORMx45xqWkA'
 audio_src = get_audio(url)
 annotation = annotate(audio_src)
 caption = get_caption(annotation)
 write_caption(caption, 'first')
-'''
