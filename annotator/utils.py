@@ -27,7 +27,8 @@ def get_audio(url : str):
 
 # transcribe function :: using 'base' model
 def annotate(audio_src, model_size='base'):
-    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    device = 'cpu'
     model = whisper.load_model(model_size, device=device)
     annotation = model.transcribe(audio_src)
 

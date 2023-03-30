@@ -19,8 +19,8 @@ if not AUDIO_PATH.exists(): AUDIO_PATH.mkdir(exist_ok=True)
 
 def make_sidebar():
     with st.sidebar:
-        st.markdown('### auto-YT-annotator')
-        st.write('Link to the GitHub Repo')
+        st.markdown('## auto-YT-annotator')
+        st.write('[Link To the GitHub Repo](https://github.com/nymhyde/auto-annotate-YT)')
 
 
 @st.cache(allow_output_mutation=True)
